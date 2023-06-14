@@ -1,10 +1,11 @@
-package Backend;
+
+
 
 public class Tile {
     private char tile;
-    private Position<Integer, Integer> position;
+    private Position position;
 
-    public Tile(char Tile, Position<Integer, Integer> position) {
+    public Tile(char Tile, Position position) {
         this.tile = Tile;
         this.position = position;
     }
@@ -13,11 +14,11 @@ public class Tile {
         return tile;
     }
 
-    public Position<Integer, Integer> getPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    public void setPosition(Position<Integer, Integer> position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 }

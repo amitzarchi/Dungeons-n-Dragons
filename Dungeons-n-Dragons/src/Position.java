@@ -1,27 +1,28 @@
-package Backend;
 
-public class Position<T1, T2> {
-    private T1 x;
-    private T2 y;
+
+
+public class Position {
+    private Integer x;
+    private Integer y;
     
-    public Position(T1 x, T2 y) {
+    public Position(Integer x, Integer y) {
         this.x = x;
         this.y = y;
     }
     
-    public T1 getX() {
+    public Integer getX() {
         return x;
     }
     
-    public T2 getY() {
+    public Integer getY() {
         return y;
     }
     
-    public void setX(T1 x) {
+    public void setX(Integer x) {
         this.x = x;
     }
     
-    public void setY(T2 y) {
+    public void setY(Integer y) {
         this.y = y;
     }
 }
