@@ -1,5 +1,9 @@
 public class Wall extends Tile {
-    public Wall(Position position) {
-        super('#', position);
+    public Wall() {
+        super('#');
+    }
+
+    public void accept(Unit unit) {
+        unit.visit(this);
     }
 }

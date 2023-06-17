@@ -1,6 +1,10 @@
 public class Empty extends Tile {
-    public Empty(Position position) {
-        super('.', position);
+    public Empty() {
+        super('.');
+    }
+     
+    public void accept(Unit unit) {
+        unit.visit(this);
     }
     
 }
