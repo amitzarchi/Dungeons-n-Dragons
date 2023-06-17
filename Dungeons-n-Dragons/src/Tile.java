@@ -1,17 +1,28 @@
 
 
 
-public class Tile {
+public abstract class Tile {
     private char tile;
     private Position position;
+    private BoardObserver observer;
 
-    public Tile(char Tile, Position position) {
+
+    public Tile(char Tile) {
         this.tile = Tile;
-        this.position = position;
     }
     
-    public char getTile() {
+    public void initialize(Position position, BoardObserver observer) {
+        this.position = position;
+        this.observer = observer;
+        notifyNewTile();
+    }
+
+    public char getChar() {
         return tile;
+    }
+
+    public void setChar(char tile) {
+        this.tile = tile;
     }
 
     public Position getPosition() {
@@ -19,7 +30,44 @@ public class Tile {
     }
 
     public void setPosition(Position position) {
+        int oldX = this.position.getX();
+        int oldY = this.position.getY();
+        this.position.setX(position.getX());
+        this.position.setY(position.getY());
+        notifyPositionChanged(oldX, oldY, position.getX(), position.getY());
+    }
+
+    public void delete() {
+        observer.updateDeleteTile(this);
+    }
+
+    public void setPositionWithoutNotify(Position position) {
         this.position = position;
     }
+    
+    public void notifyNewTile() {
+        observer.updateNewTile(this);
+    }
+    public void notifyPositionChanged(int oldX, int oldY, int newX, int newY) {
+        observer.updatePosition(oldX, oldY, newX, newY);
+    }
+
+    public abstract void accept(Unit unit);
+
+
+    /// <summary>
+    /// Compares the relative position of this position to another position.
+    /// [0] = x difference, positive if other is east of this
+    /// [1] = y difference, positive if other is south of this
+    /// </summary>
+    public int[] compareTo(Tile other) {
+        return this.position.compareTo(other.position);
+    }
+
+    public BoardObserver getObserver() {
+        return observer;
+    }
+
+
 }
 

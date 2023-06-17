@@ -9,8 +9,8 @@ public class Mage extends Player {
     private int hitsCount;
     private int abilityRange;
 
-    public Mage(String name, int healthPool, int attackPoints, int defensePoints, int manaPool, int manaCost, int spellPower, int hitsCount, int abilityRange, Position position) {
-        super(name, healthPool, attackPoints, defensePoints, position);
+    public Mage(String name, int healthPool, int attackPoints, int defensePoints, int manaPool, int manaCost, int spellPower, int hitsCount, int abilityRange) {
+        super(name, healthPool, attackPoints, defensePoints);
         this.manaPool = manaPool;
         this.currentMana = manaPool / 4;
         this.manaCost = manaCost;
@@ -19,4 +19,7 @@ public class Mage extends Player {
         this.abilityRange = abilityRange;
     }
     
+    public void initialize(Position position, BoardObserver observer) {
+        super.initialize(position, observer);
+    }
 }

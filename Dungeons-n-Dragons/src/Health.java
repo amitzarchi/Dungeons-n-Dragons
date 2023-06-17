@@ -8,4 +8,34 @@ public class Health {
         HealthPool = health;
         HealthAmount = health;
     }
+
+    public int getHealthPool() {
+        return HealthPool;
+    }
+    public int getHealthAmount() {
+        return HealthAmount;
+    }
+
+    public void reduce(int damage) {
+        HealthAmount -= damage;
+    }
+
+    public void heal(int amount) {
+        HealthAmount += amount;
+        if (HealthAmount > HealthPool) {
+            HealthAmount = HealthPool;
+        }
+    }
+
+    public void increaseMaxHealth(int amount) {
+        HealthPool += amount;
+    }
+
+    public void SetHealthAmountToMax() {
+        HealthAmount = HealthPool;
+    }
+
+    public boolean isDead() {
+        return HealthAmount <= 0;
+    }
 }

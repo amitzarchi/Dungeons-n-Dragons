@@ -1,13 +1,17 @@
 
 
 
-public class Monster extends Enemie {
+public class Monster extends Enemy {
     
     private int visionRange;
 
-    public Monster(String name, int healthPool, int attackPoints, int defensePoints, int experienceValue, int visionRange, Position position, char tile) {
-        super(name, healthPool, attackPoints, defensePoints, experienceValue, position, tile);
+    public Monster(String name, int healthPool, int attackPoints, int defensePoints, int experienceValue, int visionRange, char tile) {
+        super(name, healthPool, attackPoints, defensePoints, experienceValue, tile);
         this.visionRange = visionRange;
     }
     
+    public void initialize(Position position, BoardObserver observer) {
+        super.initialize(position, observer);
+    }
+
 }
