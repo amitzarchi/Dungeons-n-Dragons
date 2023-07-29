@@ -10,8 +10,14 @@ public class Warrior extends Player{
         this.remainingCooldown = 0;
     }
 
-    public void initialize(Position position, BoardObserver observer) {
+    public void initialize(Position position, GameObserver observer) {
         super.initialize(position, observer);
+    }
+
+    public void onGameTick() {
+        if (remainingCooldown > 0) {
+            remainingCooldown--;
+        }
     }
 
     public void levelUp() {
@@ -22,18 +28,17 @@ public class Warrior extends Player{
         increaseDefensePoints(level);
     }
 
+
     public void castAbility() {
         if (remainingCooldown == 0) {
             remainingCooldown = abilityCooldown;
             getHealth().heal(10*getDefensePoints());
-            Random rand = new Random();
-            int damage = rand.nextInt((int)0.1*getHealth().getHealthPool());
-            BoardObserver o = getObserver();
-            o.attackNeighbours(getPosition(), damage);
-
+            int damage =(int)((0.1)*getHealth().getHealthPool());
+            getObserver().playerAbillityCast(getPosition(), 3, damage, false);
         }
-
-    
+        else {
+            getObserver().abilityFailed();
+        }
     }
 
 

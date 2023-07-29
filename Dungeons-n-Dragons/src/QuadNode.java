@@ -4,9 +4,9 @@ public class QuadNode {
         private int x;
         private int y;
         private int size;
-        private BoardObserver observer;
+        private GameObserver observer;
 
-        public QuadNode(int x, int y, int size, BoardObserver observer) {
+        public QuadNode(int x, int y, int size, GameObserver observer) {
             this.x = x;
             this.y = y;
             this.size = size;

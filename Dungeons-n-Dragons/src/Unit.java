@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 public abstract class Unit extends Tile {
@@ -16,7 +17,7 @@ public abstract class Unit extends Tile {
         this.defensePoints = defensePoints;
     }
 
-     public void initialize(Position position, BoardObserver observer) {
+     public void initialize(Position position, GameObserver observer) {
         super.initialize(position, observer);
     }
 
@@ -24,36 +25,57 @@ public abstract class Unit extends Tile {
         return this.health;
     }
 
-    public void interact(Tile tile) {
-        tile.accept(this);
+    public void moveUp() {
+        interact(getObserver().getTile(getPosition().up()));
     }
 
-    public void visit(Empty e) {
+    public void moveDown() {
+        interact(getObserver().getTile(getPosition().down()));
+    }
+
+    public void moveLeft() {
+        interact(getObserver().getTile(getPosition().left()));
+    }
+
+    public void moveRight() {
+        interact(getObserver().getTile(getPosition().right()));
+    }
+
+    public void interact(Tile tile) {
+        tile.interactAccept(this);
+    }
+
+    public void interactVisit(Empty e) {
         this.setPosition(e.getPosition());
     }
 
-    public void visit(Wall w) {
+    public void interactVisit(Wall w) {
         // Do nothing
     }   
     
-    public abstract void visit(Player p);
-    public abstract void visit(Enemy e);
+    public abstract void interactVisit(Player p);
+    public abstract void interactVisit(Enemy e);
 
 
     public void battle(Unit u){
-        int attackRoll = this.attack();
-        int defenseRoll = u.defend();
+        int attackRoll = this.rollAttack();
+        int defenseRoll = u.rollDefence();
         int damage = Math.max(0, attackRoll - defenseRoll);
         u.getHealth().reduce(damage);
     }
+    public void TakeAHit(int attackValue){
+        int defenseRoll = rollDefence();
+        int damage = Math.max(0, attackValue - defenseRoll);
+        getHealth().reduce(damage);
+    }
 
-    public int attack() {
+    public int rollAttack() {
         Random rand = new Random();
         int attackRoll = rand.nextInt(attackPoints);
         return attackRoll;
     }
 
-    public int defend() {
+    public int rollDefence() {
         Random rand = new Random();
         int defenseRoll = rand.nextInt(defensePoints);
         return defenseRoll;
@@ -74,6 +96,8 @@ public abstract class Unit extends Tile {
     public void increaseDefensePoints(int amount) {
         this.defensePoints += amount;
     }
+    public abstract void addIfEnemy(List<Enemy> enemies);
+
 
     
 }

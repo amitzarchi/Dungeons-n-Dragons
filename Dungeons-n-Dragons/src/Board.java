@@ -1,18 +1,62 @@
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board implements BoardObserver{
+public class Board {
     private QuadNode root;
     private int boardSize;
     int width;
     int height;
+    GameObserver observer;
 
-    public Board(int x, int y)  {
+    public Board(int x, int y, GameObserver observer)  {
 
         boardSize = Math.max(x, y);
         width = x;
         height = y;
-        root = new QuadNode(1, 1, boardSize, this);
+        this.observer = observer;
+        root = new QuadNode(1, 1, boardSize, observer);
+    }
+
+    public Board(File file, int playerNum, GameObserver observer) {
+        this.observer = observer;
+        try {
+            Path path = Paths.get(file.getAbsolutePath());
+            List<String> lines = Files.readAllLines(path);
+            width = lines.get(0).length();
+            height = lines.size();
+            boardSize = Math.max(width, height);
+            root = new QuadNode(1, 1, boardSize, observer);
+            for (int y = 0; y < height; y++) {
+                String line = lines.get(y);
+                for (int x = 0; x < width; x++) {
+                    char c = line.charAt(x);
+                    if (c == '@') {
+                        Player player = TileFactory.SetChosenPlayer(playerNum, new Position(x + 1, y + 1), observer);
+                        insert(x + 1, y + 1, player);
+                        observer.setPlayer(player);
+                    }
+                    else {
+                        Tile tile = TileFactory.createTile(c, new Position(x + 1, y + 1), observer);
+                        insert(x + 1, y + 1, tile);
+                    }
+                }
+            } 
+        } catch (Exception e) {}
+    }
+
+    public int getNumOfLines(File file) {
+        int numOfLines = 0;
+        try {
+            Path path = Paths.get(file.getAbsolutePath());
+            numOfLines = (int) Files.lines(path).count();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return numOfLines;
     }
 
     public void updateNewTile(Tile tile) {
@@ -54,7 +98,7 @@ public class Board implements BoardObserver{
             throw new IllegalArgumentException("Coordinates out of bounds");
         }
         Empty empty = new Empty();
-        empty.initialize(new Position(x, y), this);
+        empty.initialize(new Position(x, y), observer);
         root.insert(x, y, empty);
     }
 
@@ -85,18 +129,6 @@ public class Board implements BoardObserver{
         return units;
     }
 
-    public Board getRange(Position position, int range) {
-        Board board = new Board(range * 2 + 1, range * 2 + 1);
-        int x = position.getX();
-        int y = position.getY();
-        for (int i = x - range; i <= x + range; i++) {
-            for (int j = y - range; j <= y + range; j++) {
-                Tile tile = get(i, j);
-                board.insert(i - x + range + 1, j - y + range + 1, tile);
-            }
-        }
-        return board;
-    }
 
     public int getWidth() {
         return width;

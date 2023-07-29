@@ -19,7 +19,22 @@ public class Mage extends Player {
         this.abilityRange = abilityRange;
     }
     
-    public void initialize(Position position, BoardObserver observer) {
+    public void initialize(Position position, GameObserver observer) {
         super.initialize(position, observer);
     }
+
+    public void onGameTick() {
+        currentMana = Math.min(manaPool, currentMana + level);
+    }
+
+    public void castAbility(){
+       if (currentMana >= manaCost) {
+            currentMana -= manaCost;
+            int hits = 0;
+            while (hits < hitsCount) {
+                getObserver().playerAbillityCast(getPosition(), abilityRange, spellPower, false);
+                hits--;
+            }
+    }
+}
 }

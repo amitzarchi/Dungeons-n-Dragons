@@ -1,45 +1,89 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameManager {
-    private Board board;
+public class GameManager implements GameObserver {
+    public List<Board> boards;
+    public int level;
+    public Board board;
+    public Player player;
 
-    public GameManager() {
-        board = new Board(10, 10);
+    public GameManager(int playerNum) {
+        File folder = new File("C:\\Users\\amitz\\OneDrive\\Documents\\Newfolder\\levels_dir");
+        File[] listOfFiles = folder.listFiles();
+        boards = new ArrayList<Board>();
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                Board board = new Board(file, playerNum, this);
+                boards.add(board);
+            }
+        }
+        level = 0;
+        board = boards.get(level);
     }
 
-    public void PlayerAbillityCast(Position position, int range, int damage, boolean hitEveryone) {
-        Board miniBoard = board.getRange(position, range);
-        List<Enemy> enemies = getEnemiesInBoard(miniBoard);
-        for (Enemy enemy : enemies) {
-            if (hitEveryone) {
-                enemy.getHealth().reduce(damage);
-            } else {
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void updatePosition(int oldX, int oldY, int newX, int newY) {
+        board.updatePosition(oldX, oldY, newX, newY);
+    }
+
+    public void updateNewTile(Tile tile) {
+        board.updateNewTile(tile);
+    }
+
+    public void updateDeleteTile(Tile tile) {
+        board.updateDeleteTile(tile);
+    }
+
+    public Tile getTile(Position position) {
+        return board.get(position.getX(), position.getY());
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+    public Position getPlayerPosition() {
+        return player.getPosition();
+    }
+
+
+    public void playerAbillityCast(Position position, int range, int damage, boolean hitEveryone) {
+        List<Enemy> enemies = getEnemiesInRange(position, range);
+        if (enemies.size() > 0) {
+            if(hitEveryone) {
+                for (Enemy enemy : enemies) {
+                    enemy.TakeAHit(damage);
+                }
+            }
+            else {
                 Random rand = new Random();
-                Enemy RandomEnemy = enemies.get(rand.nextInt(enemies.size()));
-                RandomEnemy.getHealth().reduce(damage);
-            }                
+                int index = rand.nextInt(enemies.size());
+                enemies.get(index).TakeAHit(damage);
+            }
         }
     }
 
-    public List<Enemy> getEnemiesInBoard(Board board) {
-        List<Enemy> enemies = new ArrayList<>();
-        for (int i = 1; i <= board.getWidth(); i++) {
-            for (int j = 1; j <= board.getHeight(); j++) {
-                Tile tile = board.get(i, j);
-                if (tile instanceof Enemy) {
-                    enemies.add((Enemy)tile);
+    public List<Enemy> getEnemiesInRange(Position position, int range) {
+        List<Enemy> enemies = new ArrayList<Enemy>();
+        for (int i = position.getX() - range; i <= position.getX() + range; i++) {
+            for (int j = position.getY() - range; j <= position.getY() + range; j++) {
+                if (i >= 1 && i <= board.width && j >= 1 && j <= board.height) {
+                    Tile tile = board.get(i, j);
+                    tile.addIfEnemy(enemies);
                 }
             }
         }
         return enemies;
     }
-
-                
     
-
-
+    public void abilityFailed() {
+        // implement with cli
+    }
+    
 
 
 

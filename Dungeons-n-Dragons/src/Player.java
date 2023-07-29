@@ -1,5 +1,4 @@
-
-
+import java.util.List;
 
 public class Player extends Unit {
 
@@ -12,11 +11,11 @@ public class Player extends Unit {
         this.level = 1;
     }
 
-    public void initialize(Position position, BoardObserver observer) {
+    public void initialize(Position position, GameObserver observer) {
         super.initialize(position, observer);
     }
 
-    public void visit(Enemy enemy) {
+    public void interactVisit(Enemy enemy) {
         battle(enemy);
         if (enemy.getHealth().isDead()) {
             experience += enemy.getExperienceValue();
@@ -27,13 +26,18 @@ public class Player extends Unit {
         }
     }
 
-    public void visit(Player player) {
+    public void interactVisit(Player player) {
         // Do nothing
     }
 
-    public void accept(Unit unit) {
-        unit.visit(this);
+    public void interactAccept(Unit unit) {
+        unit.interactVisit(this);
     }
+    
+    public void addIfEnemy(List<Enemy> enemies) {
+        // Do nothing
+    }
+
 
     public void onDeath() {
         this.setChar('X');

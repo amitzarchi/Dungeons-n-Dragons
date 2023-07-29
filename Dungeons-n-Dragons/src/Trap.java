@@ -16,7 +16,21 @@ public class Trap extends Enemy {
         this.visible = true;
     }
     
-    public void initialize(Position position, BoardObserver observer) {
+    public void initialize(Position position, GameObserver observer) {
         super.initialize(position, observer);
     }
+
+    public void onTurn() {
+        visible = ticksCount < visibilityTime;
+        if (ticksCount == visibilityTime + invisibilityTime) {
+            ticksCount = 0;
+        }
+        else {
+            ticksCount++;
+        }
+        if (getPosition().distance(getObserver().getPlayerPosition()) == 1) {
+            battle(getObserver().getPlayer());
+        }
+    }
 }
+

@@ -1,20 +1,18 @@
-
-
+import java.util.List;
 
 public abstract class Tile {
     private char tile;
     private Position position;
-    private BoardObserver observer;
+    private GameObserver observer;
 
 
     public Tile(char Tile) {
         this.tile = Tile;
     }
     
-    public void initialize(Position position, BoardObserver observer) {
+    public void initialize(Position position, GameObserver observer) {
         this.position = position;
         this.observer = observer;
-        notifyNewTile();
     }
 
     public char getChar() {
@@ -52,8 +50,8 @@ public abstract class Tile {
         observer.updatePosition(oldX, oldY, newX, newY);
     }
 
-    public abstract void accept(Unit unit);
-
+    public abstract void interactAccept(Unit unit);
+    public abstract void addIfEnemy(List<Enemy> enemies);
 
     /// <summary>
     /// Compares the relative position of this position to another position.
@@ -64,7 +62,7 @@ public abstract class Tile {
         return this.position.compareTo(other.position);
     }
 
-    public BoardObserver getObserver() {
+    public GameObserver getObserver() {
         return observer;
     }
 

@@ -1,4 +1,4 @@
-
+import java.util.List;
 
 public class Enemy extends Unit {
     private int experienceValue;
@@ -8,7 +8,7 @@ public class Enemy extends Unit {
         this.experienceValue = experienceValue;
     }
 
-    public void initialize(Position position, BoardObserver observer) {
+    public void initialize(Position position, GameObserver observer) {
         super.initialize(position, observer);
     }
 
@@ -16,18 +16,21 @@ public class Enemy extends Unit {
         this.delete();
     }
 
-    public void accept(Unit unit) {
-        unit.visit(this);
+    public void interactAccept(Unit unit) {
+        unit.interactVisit(this);
     }
 
-    public void visit(Player player) {
+    public void interactVisit(Player player) {
         battle(player);
         if (player.getHealth().isDead()) {
             player.onDeath();
         }
     }
+    public void addIfEnemy(List<Enemy> enemies) {
+        enemies.add(this);
+    }
 
-    public void visit(Enemy enemy) {
+    public void interactVisit(Enemy enemy) {
         // Do nothing
     }
 

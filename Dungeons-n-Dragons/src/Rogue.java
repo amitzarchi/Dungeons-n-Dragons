@@ -12,8 +12,21 @@ public class Rogue extends Player {
         this.currentEnergy = 100;
     }
     
-    public void initialize(Position position, BoardObserver observer) {
+    public void initialize(Position position, GameObserver observer) {
         super.initialize(position, observer);
     }
 
+    public void onGameTick() {
+        currentEnergy = Math.min(100, currentEnergy + 10);
+    }
+
+    public void castAbility() {
+        if (currentEnergy >= cost) {
+            currentEnergy -= cost;
+            getObserver().playerAbillityCast(getPosition(), 2, getAttackPoints(), true);
+        }
+        else {
+            getObserver().abilityFailed();
+        }
+    }
 }

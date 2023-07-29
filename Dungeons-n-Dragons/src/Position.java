@@ -27,7 +27,22 @@ public class Position {
         this.y = y;
     }
 
+    public Position up() {
+        return new Position(x, y - 1);
+    }
 
+    public Position down() {
+        return new Position(x, y + 1);
+    }
+
+    public Position left() {
+        return new Position(x - 1, y);
+    }
+
+    public Position right() {
+        return new Position(x + 1, y);
+    }
+    
     /// <summary>
     /// Compares the relative position of this position to another position.
     /// [0] = x difference, positive if other is east of this
@@ -39,6 +54,15 @@ public class Position {
         result[0] = other.x - x;
         result[1] = other.y - y;
         return result;
+    }
+
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
+    public int distance(Position other) {
+        int[] result = compareTo(other);
+        return (int) Math.sqrt(result[0] * result[0] + result[1] * result[1]);
     }
 
       /* 
