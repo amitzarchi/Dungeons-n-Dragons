@@ -17,28 +17,29 @@ public abstract class Player extends Unit {
     }
 
     public void onTurn() {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        switch (input) {
-            case "w":
-                moveUp();
-                break;
-            case "a":
-                moveLeft();
-                break;
-            case "s":
-                moveDown();
-                break;
-            case "d":
-                moveRight();
-                break;
-            case "e":
-                castAbility();
-                break;
-            case "q":
-                break;
-            default:
-                onTurn();
+        try (Scanner scanner = new Scanner(System.in)) {
+            String input = scanner.nextLine();
+            switch (input) {
+                case "w":
+                    moveUp();
+                    break;
+                case "a":
+                    moveLeft();
+                    break;
+                case "s":
+                    moveDown();
+                    break;
+                case "d":
+                    moveRight();
+                    break;
+                case "e":
+                    castAbility();
+                    break;
+                case "q":
+                    break;
+                default:
+                    onTurn();
+            }
         }
     }
 

@@ -1,4 +1,3 @@
-import java.util.Random;
 
 public class Warrior extends Player{
     private int abilityCooldown;
