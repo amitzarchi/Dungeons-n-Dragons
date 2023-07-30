@@ -121,7 +121,7 @@ public class TileFactory {
         switch (chosenPlayer) {
             case 1:
             {
-                Warrior warrior = new Warrior("Jon Snow - TEST", 10, 30, 4, 3);
+                Warrior warrior = new Warrior("Jon Snow", 300, 30, 4, 3);
                 warrior.initialize(position, observer);
                 return warrior;
             }
