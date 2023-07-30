@@ -35,6 +35,10 @@ public class Mage extends Player {
                 getObserver().playerAbillityCast(getPosition(), abilityRange, spellPower, false);
                 hits--;
             }
+        }
     }
-}
+
+    public String toString() {
+        return super.toString() + " | mana: " + currentMana + "/" + manaPool;
+    }
 }

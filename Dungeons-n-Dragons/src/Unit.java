@@ -21,6 +21,10 @@ public abstract class Unit extends Tile {
         super.initialize(position, observer);
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public Health getHealth() {
         return this.health;
     }
@@ -62,6 +66,7 @@ public abstract class Unit extends Tile {
         int defenseRoll = u.rollDefence();
         int damage = Math.max(0, attackRoll - defenseRoll);
         u.getHealth().reduce(damage);
+        getObserver().battleInformation(this, u, attackRoll, defenseRoll, damage);
     }
     public void TakeAHit(int attackValue){
         int defenseRoll = rollDefence();
@@ -98,6 +103,8 @@ public abstract class Unit extends Tile {
     }
     public abstract void addIfEnemy(List<Enemy> enemies);
 
-
+    public String toString() {
+        return name + " | " + health.toString() + " | attack: " + attackPoints + " | defense: " + defensePoints;
+    }
     
 }

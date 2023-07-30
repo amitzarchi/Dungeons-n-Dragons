@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Enemy extends Unit {
+public abstract class Enemy extends Unit {
     private int experienceValue;
 
     public Enemy(String name, int healthPool, int attackPoints, int defensePoints, int experienceValue, char tile) {
@@ -14,6 +14,7 @@ public class Enemy extends Unit {
 
     public void onDeath() {
         this.delete();
+        getObserver().enemyDeath(getName());
     }
 
     public void interactAccept(Unit unit) {
@@ -37,4 +38,6 @@ public class Enemy extends Unit {
     public int getExperienceValue() {
         return this.experienceValue;
     }
+
+    public abstract void onTurn();
 }

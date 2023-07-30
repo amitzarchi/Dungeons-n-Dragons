@@ -5,11 +5,12 @@ import java.util.Random;
 
 public class GameManager implements GameObserver {
     public List<Board> boards;
-    public int level;
+    public int currentLevel;
+    public int numOfLevels;
     public Board board;
-    public Player player;
+    public CLIObserver CLIObserver;
 
-    public GameManager(int playerNum) {
+    public GameManager(int playerNum, String path, CLIObserver CLIObserver) {
         File folder = new File("C:\\Users\\amitz\\OneDrive\\Documents\\Newfolder\\levels_dir");
         File[] listOfFiles = folder.listFiles();
         boards = new ArrayList<Board>();
@@ -19,12 +20,36 @@ public class GameManager implements GameObserver {
                 boards.add(board);
             }
         }
-        level = 0;
-        board = boards.get(level);
+        currentLevel = 0;
+        numOfLevels = boards.size();
+        board = boards.get(currentLevel);
+        this.CLIObserver = CLIObserver;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void play() {
+        while (board.enemies.size() > 0) {
+            CLIObserver.printBoard();
+            CLIObserver.printPlayerStats();
+            board.player.onTurn();
+            for (Enemy enemy : board.enemies) {
+                enemy.onTurn();
+            }
+            if (board.player.getHealth().isDead()) {
+                board.player.onDeath();
+                CLIObserver.printBoard();
+                CLIObserver.printGameOver();
+                return;
+            }
+        }
+        if (currentLevel < numOfLevels - 1) {
+            currentLevel++;
+            board = boards.get(currentLevel);
+            play();
+        }
+        else {
+            CLIObserver.printBoard();
+            CLIObserver.printWin();
+        }
     }
 
     public void updatePosition(int oldX, int oldY, int newX, int newY) {
@@ -44,12 +69,15 @@ public class GameManager implements GameObserver {
     }
 
     public Player getPlayer() {
-        return player;
+        return board.player;
     }
     public Position getPlayerPosition() {
-        return player.getPosition();
+        return board.player.getPosition();
     }
 
+    public void battleInformation(Unit attacker, Unit defender, int attackRoll, int defenseRoll, int damage) {
+        CLIObserver.printBattleInformation(attacker, defender, attackRoll, defenseRoll, damage);
+    }
 
     public void playerAbillityCast(Position position, int range, int damage, boolean hitEveryone) {
         List<Enemy> enemies = getEnemiesInRange(position, range);
@@ -81,11 +109,14 @@ public class GameManager implements GameObserver {
     }
     
     public void abilityFailed() {
-        // implement with cli
+        CLIObserver.printAbilityFailed();
+    }
+
+    public void playerLeveledUp(Player player) {
+        CLIObserver.printPlayerLeveledUp(player);
     }
     
-
-
-
-
+    public void enemyDeath(String name) {
+        CLIObserver.printEnemyDeath(name);
+    }
 }

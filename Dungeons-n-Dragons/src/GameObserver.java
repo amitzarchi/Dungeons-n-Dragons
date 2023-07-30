@@ -8,5 +8,7 @@ public interface GameObserver {
     public Tile getTile(Position position);
     public Player getPlayer();
     public Position getPlayerPosition();
-    public void setPlayer(Player player);
+    public void battleInformation(Unit attacker, Unit defender, int attackRoll, int defenseRoll, int damage);
+    public void playerLeveledUp(Player player);
+    public void enemyDeath(String name);
 }

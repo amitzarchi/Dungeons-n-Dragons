@@ -18,6 +18,9 @@ public class Health {
 
     public void reduce(int damage) {
         HealthAmount -= damage;
+        if (HealthAmount < 0) {
+            HealthAmount = 0;
+        }
     }
 
     public void heal(int amount) {
@@ -37,5 +40,9 @@ public class Health {
 
     public boolean isDead() {
         return HealthAmount <= 0;
+    }
+
+    public String toString() {
+        return " Health: " + HealthAmount + "/" + HealthPool;
     }
 }

@@ -41,5 +41,9 @@ public class Warrior extends Player{
         }
     }
 
+    public String toString() {
+        return super.toString() + " | ability cooldown: " + abilityCooldown + " | remaining cooldown: " + remainingCooldown;
+    }
+
 
 }

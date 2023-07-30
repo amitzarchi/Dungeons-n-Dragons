@@ -1,6 +1,7 @@
 import java.util.List;
+import java.util.Scanner;
 
-public class Player extends Unit {
+public abstract class Player extends Unit {
 
     protected int experience;
     protected int level;
@@ -13,6 +14,32 @@ public class Player extends Unit {
 
     public void initialize(Position position, GameObserver observer) {
         super.initialize(position, observer);
+    }
+
+    public void onTurn() {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        switch (input) {
+            case "w":
+                moveUp();
+                break;
+            case "a":
+                moveLeft();
+                break;
+            case "s":
+                moveDown();
+                break;
+            case "d":
+                moveRight();
+                break;
+            case "e":
+                castAbility();
+                break;
+            case "q":
+                break;
+            default:
+                onTurn();
+        }
     }
 
     public void interactVisit(Enemy enemy) {
@@ -53,10 +80,23 @@ public class Player extends Unit {
             this.increaseAttackPoints(4*level);
             this.increaseDefensePoints(level);
         }
+        if (experience < 0) {
+            experience = 0;
+        }
+        getObserver().playerLeveledUp(this);
     }
 
     public boolean levelUpCheck() {
         return experience >= 50 * level;
+    }
+
+    public abstract void castAbility();
+    public String toString() {
+        return super.toString() + " | experience: " + experience + " | level: " + level;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
 }

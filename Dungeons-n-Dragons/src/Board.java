@@ -11,15 +11,8 @@ public class Board {
     int width;
     int height;
     GameObserver observer;
-
-    public Board(int x, int y, GameObserver observer)  {
-
-        boardSize = Math.max(x, y);
-        width = x;
-        height = y;
-        this.observer = observer;
-        root = new QuadNode(1, 1, boardSize, observer);
-    }
+    public Player player;
+    public List<Enemy> enemies;
 
     public Board(File file, int playerNum, GameObserver observer) {
         this.observer = observer;
@@ -30,21 +23,23 @@ public class Board {
             height = lines.size();
             boardSize = Math.max(width, height);
             root = new QuadNode(1, 1, boardSize, observer);
+            Player player = null;
+            enemies = new ArrayList<Enemy>();
             for (int y = 0; y < height; y++) {
                 String line = lines.get(y);
                 for (int x = 0; x < width; x++) {
                     char c = line.charAt(x);
                     if (c == '@') {
-                        Player player = TileFactory.SetChosenPlayer(playerNum, new Position(x + 1, y + 1), observer);
+                        player = TileFactory.SetChosenPlayer(playerNum, new Position(x + 1, y + 1), observer);
                         insert(x + 1, y + 1, player);
-                        observer.setPlayer(player);
+                        this.player = player;
                     }
                     else {
-                        Tile tile = TileFactory.createTile(c, new Position(x + 1, y + 1), observer);
+                        Tile tile = TileFactory.createTile(c, new Position(x + 1, y + 1), enemies, observer);
                         insert(x + 1, y + 1, tile);
                     }
                 }
-            } 
+            }
         } catch (Exception e) {}
     }
 
@@ -71,6 +66,12 @@ public class Board {
 
     public void updateDeleteTile(Tile tile) {
         delete(tile.getPosition().getX(), tile.getPosition().getY());
+        if (enemies.contains(tile)) {
+            enemies.remove(tile);
+        }
+        if (tile == player) {
+            player = null;
+        }
     }
 
     public void insert(int x, int y, Tile value) {
