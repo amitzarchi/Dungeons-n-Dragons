@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.Scanner;
 
 public class CLI implements CLIObserver {
@@ -23,6 +24,7 @@ public class CLI implements CLIObserver {
         System.out.println("4. Thoros of Myr - Health: 250/250, Attack: 25, Defense: 4, Level: 1, Experience: 0/50, Mana: 37/150, Spell Power: 20, Cooldown: 0/3");
         System.out.println("5. Arya Stark - Health: 150/150, Attack: 40, Defense: 2, Level: 1, Experience: 0/50, Energy: 100/100");
         System.out.println("6. Bronn - Health: 250/250, Attack: 35, Defense: 3, Level: 1, Experience: 0/50, Energy: 100/100");
+        System.out.println("7. Ygritte - Health: 220/220, Attack: 30, Defense: 2, Level: 1, Experience: 0/50, Arrows: 10/10");
         System.out.println("====================================================================================================================================");
         System.out.println();
     }
@@ -45,8 +47,8 @@ public class CLI implements CLIObserver {
         System.out.println();
     }
 
-    public void printAbilityFailed() {
-        System.out.println("Cannot cast ability! Not enugh resurces :( ");
+    public void printAbilityFailed(String message) {
+        System.out.println("Cannot Cast Abillity :( " + message );
     }
 
     public void printPlayerStats() {
@@ -64,6 +66,17 @@ public class CLI implements CLIObserver {
         System.out.println("==========================================================");
         System.out.println();
     }
+
+    public void printAbilityCastInfo(Unit attacker, Map<Unit, Integer> battleInformation){
+        System.out.println("==========================================================");
+        System.out.println(attacker.getName() + " Casted Abillity!");
+        for (Unit defender : battleInformation.keySet()) {
+            System.out.println(attacker.getName() + " hit " + defender.getName() + " for " + battleInformation.get(defender) + " ability damage!");
+            System.out.println(defender.getName() + " health is " + defender.getHealth().getHealthAmount() + "/" + defender.getHealth().getHealthPool());
+        }
+        System.out.println("==========================================================");
+    }
+
 
     public void printPlayerLeveledUp(Player player) {
         System.out.println("==================================");

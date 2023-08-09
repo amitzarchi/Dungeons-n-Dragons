@@ -66,6 +66,10 @@ public abstract class Tile {
         return observer;
     }
 
+    public void setObserver(GameObserver observer) {
+        this.observer = observer;
+    }
+
 
 }
 

@@ -33,10 +33,10 @@ public class Warrior extends Player{
             remainingCooldown = abilityCooldown;
             getHealth().heal(10*getDefensePoints());
             int damage =(int)((0.1)*getHealth().getHealthPool());
-            getObserver().playerAbillityCast(getPosition(), 3, damage, false);
+            getObserver().AttackInRange(this, 3, damage, false);
         }
         else {
-            getObserver().abilityFailed();
+            getObserver().abilityFailed( "Wait " + remainingCooldown + " turns for ability to cooldown");
         }
     }
 

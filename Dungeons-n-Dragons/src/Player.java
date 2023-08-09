@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.Scanner;
 
-public abstract class Player extends Unit {
+public abstract class Player extends Unit implements HeroicUnit{
 
     protected int experience;
     protected int level;
@@ -17,29 +17,29 @@ public abstract class Player extends Unit {
     }
 
     public void onTurn() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            String input = scanner.nextLine();
-            switch (input) {
-                case "w":
-                    moveUp();
-                    break;
-                case "a":
-                    moveLeft();
-                    break;
-                case "s":
-                    moveDown();
-                    break;
-                case "d":
-                    moveRight();
-                    break;
-                case "e":
-                    castAbility();
-                    break;
-                case "q":
-                    break;
-                default:
-                    onTurn();
-            }
+        onGameTick();
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        switch (input) {
+            case "w":
+                moveUp();
+                break;
+            case "a":
+                moveLeft();
+                break;
+            case "s":
+                moveDown();
+                break;
+            case "d":
+                moveRight();
+                break;
+            case "e":
+                castAbility();
+                break;
+            case "q":
+                break;
+            default:
+                onTurn();
         }
     }
 
@@ -88,16 +88,18 @@ public abstract class Player extends Unit {
     }
 
     public boolean levelUpCheck() {
+        
         return experience >= 50 * level;
     }
 
     public abstract void castAbility();
     public String toString() {
-        return super.toString() + " | experience: " + experience + " | level: " + level;
+        return super.toString() + " | experience: " + experience + "/" + 50 * level +" | level: " + level;
     }
 
     public int getLevel() {
         return level;
     }
 
+    public abstract void onGameTick();
 }

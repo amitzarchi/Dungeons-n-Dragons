@@ -23,10 +23,10 @@ public class Rogue extends Player {
     public void castAbility() {
         if (currentEnergy >= cost) {
             currentEnergy -= cost;
-            getObserver().playerAbillityCast(getPosition(), 2, getAttackPoints(), true);
+            getObserver().AttackInRange(this, 2, getAttackPoints(), true);
         }
         else {
-            getObserver().abilityFailed();
+            getObserver().abilityFailed("Not enough energy");
         }
     }
 }

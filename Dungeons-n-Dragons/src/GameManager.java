@@ -1,6 +1,8 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class GameManager implements GameObserver {
@@ -43,7 +45,12 @@ public class GameManager implements GameObserver {
         }
         if (currentLevel < numOfLevels - 1) {
             currentLevel++;
+            Player player = board.player;
             board = boards.get(currentLevel);
+            Player newPlayer = board.player;
+            player.initialize(newPlayer.getPosition(), this);
+            board.player = player;
+            board.insert(player.getPosition().getX(), player.getPosition().getY(), player);
             play();
         }
         else {
@@ -79,20 +86,73 @@ public class GameManager implements GameObserver {
         CLIObserver.printBattleInformation(attacker, defender, attackRoll, defenseRoll, damage);
     }
 
-    public void playerAbillityCast(Position position, int range, int damage, boolean hitEveryone) {
-        List<Enemy> enemies = getEnemiesInRange(position, range);
+    public void AttackInRange(Unit attacker, int range, int attackPoints, boolean hitEveryone) {
+        List<Enemy> enemies = getEnemiesInRange(attacker.getPosition(), range);
         if (enemies.size() > 0) {
+            Map<Unit, Integer> battleInformation = new HashMap<Unit, Integer>();
             if(hitEveryone) {
                 for (Enemy enemy : enemies) {
-                    enemy.TakeAHit(damage);
+                    int damage = enemy.TakeAHit(attackPoints);
+                    battleInformation.put(enemy, damage);
                 }
             }
             else {
                 Random rand = new Random();
                 int index = rand.nextInt(enemies.size());
-                enemies.get(index).TakeAHit(damage);
+                int damage = enemies.get(index).TakeAHit(attackPoints);
+                battleInformation.put(enemies.get(index), damage);
+            }
+            AbilityCastInfo(attacker, battleInformation);
+        }
+    }
+
+    public void MageAttack(Unit attacker, int range, int hits, int attackPoints) {
+        List<Enemy> enemies = getEnemiesInRange(attacker.getPosition(), range);
+        if (enemies.size() > 0) {
+            Map<Unit, Integer> battleInformation = new HashMap<Unit, Integer>();
+            Random rand = new Random();
+            for (int i = 0; i < hits; i++) {
+                int index = rand.nextInt(enemies.size());
+                int damage = enemies.get(index).TakeAHit(attackPoints);
+                battleInformation.put(enemies.get(index), damage);
+            }
+            AbilityCastInfo(attacker, battleInformation);
+        }
+    }
+         
+
+    public boolean HunterAbillityCast(Unit attacker, int range, int attackPoints) {
+        Enemy enemy = getClosestEnemy(attacker.getPosition(), range);
+            Map<Unit, Integer> battleInformation = new HashMap<Unit, Integer>();
+        if (enemy != null) {
+            int damage = enemy.TakeAHit(attackPoints);
+            battleInformation.put(enemy, damage);
+            AbilityCastInfo(attacker, battleInformation);
+            return true;
+        }
+        else {
+            abilityFailed("No enemy in range");
+            return false;
+        }
+    }
+
+    public void BossAbilityCast(Unit attacker, int attackPoints) {
+        int damage = board.player.TakeAHit(attackPoints);
+        Map<Unit, Integer> battleInformation = new HashMap<Unit, Integer>();
+        battleInformation.put(board.player, damage);
+        AbilityCastInfo(attacker, battleInformation);
+    }
+
+    public Enemy getClosestEnemy(Position position, int range) {
+        for (int i = 1; i <= range; i++) {
+            List<Enemy> enemies = getEnemiesInRange(position, i);
+            if (enemies.size() > 0) {
+                Random rand = new Random();
+                int index = rand.nextInt(enemies.size());
+                return enemies.get(index);
             }
         }
+        return null;
     }
 
     public List<Enemy> getEnemiesInRange(Position position, int range) {
@@ -108,8 +168,12 @@ public class GameManager implements GameObserver {
         return enemies;
     }
     
-    public void abilityFailed() {
-        CLIObserver.printAbilityFailed();
+    public void abilityFailed(String message) {
+        CLIObserver.printAbilityFailed(message);
+    }
+
+    public void AbilityCastInfo(Unit attacker, Map<Unit, Integer> battleInformation) {
+        CLIObserver.printAbilityCastInfo(attacker, battleInformation);
     }
 
     public void playerLeveledUp(Player player) {

@@ -30,13 +30,14 @@ public class Mage extends Player {
     public void castAbility(){
        if (currentMana >= manaCost) {
             currentMana -= manaCost;
-            int hits = 0;
-            while (hits < hitsCount) {
-                getObserver().playerAbillityCast(getPosition(), abilityRange, spellPower, false);
-                hits--;
+            getObserver().MageAttack(this, abilityRange, hitsCount, spellPower);
             }
+        
+        else {
+            getObserver().abilityFailed("Not enough mana");
         }
     }
+
 
     public String toString() {
         return super.toString() + " | mana: " + currentMana + "/" + manaPool;

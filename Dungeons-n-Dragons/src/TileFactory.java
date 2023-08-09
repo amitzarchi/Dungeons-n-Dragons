@@ -73,24 +73,24 @@ public class TileFactory {
             }
             case 'M':
             {
-                Monster monster = new Monster("The Mountain", 1000, 60, 25, 500, 6, 'M');
-                monster.initialize(position, observer);
-                enemies.add(monster);
-                return monster;
+                Boss boss = new Boss("The Mountain", 1000, 60, 25, 500, 'M', 6, 5);
+                boss.initialize(position, observer);
+                enemies.add(boss);
+                return boss;
             }
             case 'C':
             {
-                Monster monster = new Monster("Queen Cersei", 100, 10, 10, 1000, 1, 'C');
-                monster.initialize(position, observer);
-                enemies.add(monster);
-                return monster;
+                Boss boss = new Boss("Queen Cersei", 100, 10, 10, 1000, 'C', 1, 8);
+                boss.initialize(position, observer);
+                enemies.add(boss);
+                return boss;
             }
             case 'K':
             {
-                Monster monster = new Monster("Night's King", 5000, 300, 150, 5000, 8, 'K');
-                monster.initialize(position, observer);
-                enemies.add(monster);
-                return monster;
+                Boss boss = new Boss("Night's King", 5000, 300, 150, 5000, 'K', 8, 3);
+                boss.initialize(position, observer);
+                enemies.add(boss);
+                return boss;
             }
             case 'B':
             {
@@ -154,6 +154,12 @@ public class TileFactory {
                 Rogue rogue = new Rogue("Bronn", 250, 35, 3, 50);
                 rogue.initialize(position, observer);
                 return rogue;
+            }
+            case 7:
+            {
+                Hunter hunter = new Hunter("Ygritte", 220, 30, 2, 6);
+                hunter.initialize(position, observer);
+                return hunter;
             }
         }
         return null;

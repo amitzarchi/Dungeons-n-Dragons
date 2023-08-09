@@ -29,6 +29,10 @@ public abstract class Unit extends Tile {
         return this.health;
     }
 
+    public void setHealth(Health health) {
+        this.health = health;
+    }
+
     public void moveUp() {
         interact(getObserver().getTile(getPosition().up()));
     }
@@ -68,10 +72,15 @@ public abstract class Unit extends Tile {
         u.getHealth().reduce(damage);
         getObserver().battleInformation(this, u, attackRoll, defenseRoll, damage);
     }
-    public void TakeAHit(int attackValue){
+
+    public int TakeAHit(int attackValue){
         int defenseRoll = rollDefence();
         int damage = Math.max(0, attackValue - defenseRoll);
         getHealth().reduce(damage);
+        if (getHealth().isDead()) {
+            onDeath();
+        }
+        return damage;
     }
 
     public int rollAttack() {
