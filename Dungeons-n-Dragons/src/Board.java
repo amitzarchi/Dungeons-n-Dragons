@@ -43,6 +43,7 @@ public class Board {
         } catch (Exception e) {}
     }
 
+    // For testing purposes
     public Board(int width, int height, GameObserver observer) {
         this.observer = observer;
         this.width = width;

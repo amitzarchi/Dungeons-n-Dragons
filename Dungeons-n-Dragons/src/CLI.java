@@ -10,6 +10,7 @@ public class CLI implements CLIObserver {
         this.path = path;
     }
     
+    // For testing purposes
     public CLI() {
         this.gameManager = new GameManager(10, 10, this);
     }
