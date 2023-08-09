@@ -65,6 +65,10 @@ public class Position {
         return (int) Math.sqrt(result[0] * result[0] + result[1] * result[1]);
     }
 
+    public boolean equals(Position other) {
+        return x == other.x && y == other.y;
+    }
+
       /* 
     /// <summary>
     /// Compares the relative position of this position to another position.

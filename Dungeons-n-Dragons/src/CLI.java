@@ -4,8 +4,17 @@ import java.util.Scanner;
 public class CLI implements CLIObserver {
     public GameManager gameManager;
     public Scanner scanner;
+    private String path;
+
+    public CLI(String path) {
+        this.path = path;
+    }
     
-    public CLI(String path)
+    public CLI() {
+        this.gameManager = new GameManager(10, 10, this);
+    }
+
+    public void play() 
     {
         printChoosePlayer();
         scanner = new Scanner(System.in);

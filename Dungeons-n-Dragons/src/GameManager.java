@@ -28,6 +28,16 @@ public class GameManager implements GameObserver {
         this.CLIObserver = CLIObserver;
     }
 
+    public GameManager(int width, int height, CLIObserver CLIObserver) {
+        boards = new ArrayList<Board>();
+        Board board = new Board(width, height, this);
+        boards.add(board);
+        currentLevel = 0;
+        numOfLevels = boards.size();
+        this.board = boards.get(currentLevel);
+        this.CLIObserver = CLIObserver;
+    }
+
     public void play() {
         while (board.enemies.size() > 0) {
             CLIObserver.printBoard();
@@ -80,6 +90,12 @@ public class GameManager implements GameObserver {
     }
     public Position getPlayerPosition() {
         return board.player.getPosition();
+    }
+    public void enemySpawn(Enemy enemy) {
+        board.enemies.add(enemy);
+    }
+    public void playerSpawn(Player player) {
+        board.player = player;
     }
 
     public void battleInformation(Unit attacker, Unit defender, int attackRoll, int defenseRoll, int damage) {
@@ -161,7 +177,9 @@ public class GameManager implements GameObserver {
             for (int j = position.getY() - range; j <= position.getY() + range; j++) {
                 if (i >= 1 && i <= board.width && j >= 1 && j <= board.height) {
                     Tile tile = board.get(i, j);
-                    tile.addIfEnemy(enemies);
+                    if (board.enemies.contains(tile)) {
+                        enemies.add((Enemy)tile);
+                    }
                 }
             }
         }

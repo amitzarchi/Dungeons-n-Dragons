@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class Wall extends Tile {
     public Wall() {
         super('#');
@@ -11,8 +9,5 @@ public class Wall extends Tile {
 
     public void interactAccept(Unit unit) {
         unit.interactVisit(this);
-    }
-    public void addIfEnemy(List<Enemy> enemies) {
-        // Do nothing
     }
 }

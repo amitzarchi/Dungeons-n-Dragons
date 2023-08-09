@@ -1,4 +1,3 @@
-import java.util.List;
 
 public class Empty extends Tile {
     public Empty() {
@@ -13,7 +12,4 @@ public class Empty extends Tile {
         unit.interactVisit(this);
     }
     
-    public void addIfEnemy(List<Enemy> enemies) {
-        // Do nothing
-    }
 }

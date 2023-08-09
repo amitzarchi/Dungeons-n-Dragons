@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.Random;
 
 public abstract class Unit extends Tile {
@@ -110,7 +109,6 @@ public abstract class Unit extends Tile {
     public void increaseDefensePoints(int amount) {
         this.defensePoints += amount;
     }
-    public abstract void addIfEnemy(List<Enemy> enemies);
 
     public String toString() {
         return name + " | " + health.toString() + " | attack: " + attackPoints + " | defense: " + defensePoints;

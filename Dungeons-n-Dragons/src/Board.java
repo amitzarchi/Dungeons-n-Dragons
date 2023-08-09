@@ -43,6 +43,16 @@ public class Board {
         } catch (Exception e) {}
     }
 
+    public Board(int width, int height, GameObserver observer) {
+        this.observer = observer;
+        this.width = width;
+        this.height = height;
+        boardSize = Math.max(width, height);
+        root = new QuadNode(1, 1, boardSize, observer);
+        enemies = new ArrayList<Enemy>();
+    }
+
+
     public int getNumOfLines(File file) {
         int numOfLines = 0;
         try {

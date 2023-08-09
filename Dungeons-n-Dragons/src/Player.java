@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.Scanner;
 
 public abstract class Player extends Unit implements HeroicUnit{
@@ -14,6 +13,11 @@ public abstract class Player extends Unit implements HeroicUnit{
 
     public void initialize(Position position, GameObserver observer) {
         super.initialize(position, observer);
+    }
+    public void initializeAndNotify(Position position, GameObserver observer) {
+        super.initialize(position, observer);
+        notifyNewTile();
+        getObserver().playerSpawn(this);
     }
 
     public void onTurn() {
@@ -61,11 +65,6 @@ public abstract class Player extends Unit implements HeroicUnit{
     public void interactAccept(Unit unit) {
         unit.interactVisit(this);
     }
-    
-    public void addIfEnemy(List<Enemy> enemies) {
-        // Do nothing
-    }
-
 
     public void onDeath() {
         this.setChar('X');

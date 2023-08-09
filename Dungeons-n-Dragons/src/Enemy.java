@@ -1,4 +1,3 @@
-import java.util.List;
 
 public abstract class Enemy extends Unit {
     private int experienceValue;
@@ -10,6 +9,12 @@ public abstract class Enemy extends Unit {
 
     public void initialize(Position position, GameObserver observer) {
         super.initialize(position, observer);
+    }
+
+    public void initializeAndNotify(Position position, GameObserver observer) {
+        super.initialize(position, observer);
+        notifyNewTile();
+        getObserver().enemySpawn(this);
     }
 
     public void onDeath() {
@@ -26,9 +31,6 @@ public abstract class Enemy extends Unit {
         if (player.getHealth().isDead()) {
             player.onDeath();
         }
-    }
-    public void addIfEnemy(List<Enemy> enemies) {
-        enemies.add(this);
     }
 
     public void interactVisit(Enemy enemy) {

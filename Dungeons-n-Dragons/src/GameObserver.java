@@ -15,5 +15,7 @@ public interface GameObserver {
     public Position getPlayerPosition();
     public void battleInformation(Unit attacker, Unit defender, int attackRoll, int defenseRoll, int damage);
     public void playerLeveledUp(Player player);
+    public void playerSpawn(Player player);
+    public void enemySpawn(Enemy enemy);
     public void enemyDeath(String name);
 }
