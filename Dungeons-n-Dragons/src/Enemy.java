@@ -41,5 +41,50 @@ public abstract class Enemy extends Unit {
         return this.experienceValue;
     }
 
+    public void moveForwardToPlayer() {
+        Position playerPosition = getObserver().getPlayerPosition();
+        int dx = this.getPosition().getX() - playerPosition.getX();
+        int dy = this.getPosition().getY() - playerPosition.getY();
+        int absDx = Math.abs(dx);
+        int absDy = Math.abs(dy);
+        if (absDx > absDy) {
+            if (dx > 0) {
+                this.moveLeft();
+            }
+            else {
+                this.moveRight();
+            }
+        }
+        else {
+            if (dy > 0) {
+                this.moveUp();
+            }
+            else {
+                this.moveDown();
+            }
+        }
+
+    }
+
+    public void randomMove() {
+        int direction = (int) (Math.random() * 5);
+        switch (direction) {
+            case 0:
+                this.moveUp();
+                break;
+            case 1:
+                this.moveDown();
+                break;
+            case 2:
+                this.moveLeft();
+                break;
+            case 3:
+                this.moveRight();
+                break;
+            case 4:
+                break;
+        }
+    }
+
     public abstract void onTurn();
 }

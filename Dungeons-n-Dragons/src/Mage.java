@@ -28,7 +28,7 @@ public class Mage extends Player {
     }
 
     public void castAbility(){
-       if (currentMana >= manaCost) {
+       if (canCast()) {
             currentMana -= manaCost;
             getObserver().MageAttack(this, abilityRange, hitsCount, spellPower);
             }
@@ -38,8 +38,11 @@ public class Mage extends Player {
         }
     }
 
-
     public String toString() {
         return super.toString() + " | mana: " + currentMana + "/" + manaPool;
+    }
+
+    private boolean canCast() {
+        return currentMana >= manaCost;
     }
 }

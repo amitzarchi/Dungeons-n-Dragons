@@ -33,7 +33,7 @@ public class Hunter extends Player {
     }
 
     public void castAbility() {
-        if (arrowsCount == 0) {
+        if (!CanCast()) {
             getObserver().abilityFailed("No arrows left");
         }
         else {
@@ -44,6 +44,9 @@ public class Hunter extends Player {
 
     public String toString() {
         return super.toString() + " | arrows: " + arrowsCount;
+    }     
+
+    private boolean CanCast() {
+        return arrowsCount > 0;
     }
-        
 }

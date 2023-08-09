@@ -29,7 +29,7 @@ public class Warrior extends Player{
 
 
     public void castAbility() {
-        if (remainingCooldown == 0) {
+        if (canCast()) {
             remainingCooldown = abilityCooldown;
             getHealth().heal(10*getDefensePoints());
             int damage =(int)((0.1)*getHealth().getHealthPool());
@@ -42,6 +42,10 @@ public class Warrior extends Player{
 
     public String toString() {
         return super.toString() + " | ability cooldown: " + abilityCooldown + " | remaining cooldown: " + remainingCooldown;
+    }
+
+    private boolean canCast() {
+        return remainingCooldown == 0;
     }
 
 

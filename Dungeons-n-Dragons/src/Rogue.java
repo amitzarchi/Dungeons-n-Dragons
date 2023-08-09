@@ -21,12 +21,16 @@ public class Rogue extends Player {
     }
 
     public void castAbility() {
-        if (currentEnergy >= cost) {
+        if (canCast()) {
             currentEnergy -= cost;
             getObserver().AttackInRange(this, 2, getAttackPoints(), true);
         }
         else {
             getObserver().abilityFailed("Not enough energy");
         }
+    }
+
+    private boolean canCast() {
+        return currentEnergy >= cost;
     }
 }

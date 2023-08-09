@@ -13,7 +13,7 @@ public class GameManager implements GameObserver {
     public CLIObserver CLIObserver;
 
     public GameManager(int playerNum, String path, CLIObserver CLIObserver) {
-        File folder = new File("C:\\Users\\amitz\\OneDrive\\Documents\\Newfolder\\levels_dir");
+        File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         boards = new ArrayList<Board>();
         for (File file : listOfFiles) {
@@ -28,6 +28,7 @@ public class GameManager implements GameObserver {
         this.CLIObserver = CLIObserver;
     }
 
+    // For testing purposes
     public GameManager(int width, int height, CLIObserver CLIObserver) {
         boards = new ArrayList<Board>();
         Board board = new Board(width, height, this);
@@ -39,33 +40,23 @@ public class GameManager implements GameObserver {
     }
 
     public void play() {
-        while (board.enemies.size() > 0) {
-            CLIObserver.printBoard();
-            CLIObserver.printPlayerStats();
-            board.player.onTurn();
-            for (Enemy enemy : board.enemies) {
-                enemy.onTurn();
-            }
-            if (board.player.getHealth().isDead()) {
-                board.player.onDeath();
-                CLIObserver.printBoard();
-                CLIObserver.printGameOver();
+        while (hasEnemies()) {
+            printBoardAndStats();
+            turnsLoop();
+            if (isPlayerDead()) {
+                deadPlayerScenario();
                 return;
             }
         }
-        if (currentLevel < numOfLevels - 1) {
+        if (hasNextLevel()) {
             currentLevel++;
             Player player = board.player;
             board = boards.get(currentLevel);
-            Player newPlayer = board.player;
-            player.initialize(newPlayer.getPosition(), this);
-            board.player = player;
-            board.insert(player.getPosition().getX(), player.getPosition().getY(), player);
+            keepOldPlayer(player);
             play();
         }
         else {
-            CLIObserver.printBoard();
-            CLIObserver.printWin();
+            gameWonScenario();
         }
     }
 
@@ -88,12 +79,15 @@ public class GameManager implements GameObserver {
     public Player getPlayer() {
         return board.player;
     }
+
     public Position getPlayerPosition() {
         return board.player.getPosition();
     }
+
     public void enemySpawn(Enemy enemy) {
         board.enemies.add(enemy);
     }
+
     public void playerSpawn(Player player) {
         board.player = player;
     }
@@ -201,4 +195,47 @@ public class GameManager implements GameObserver {
     public void enemyDeath(String name) {
         CLIObserver.printEnemyDeath(name);
     }
+
+    // Private methods - for readability
+    private boolean isPlayerDead() {
+        return board.player.getHealth().isDead();
+    }
+
+    private void deadPlayerScenario() {
+        board.player.onDeath();
+        CLIObserver.printBoard();
+        CLIObserver.printGameOver();
+    }
+
+    private void printBoardAndStats() {
+        CLIObserver.printBoard();
+        CLIObserver.printPlayerStats();
+    }
+
+    private void turnsLoop() {
+        board.player.onTurn();
+        for (Enemy enemy : board.enemies) {
+            enemy.onTurn();
+        }
+    }
+
+    private boolean hasNextLevel() {
+        return currentLevel < numOfLevels - 1;
+    }
+
+    private boolean hasEnemies() {
+        return board.enemies.size() > 0;
+    }
+
+    private void keepOldPlayer(Player oldPlayer) {
+        Player newPlayer = board.player;
+        oldPlayer.initializeAndNotify(newPlayer.getPosition(), this);
+        board.player = oldPlayer;
+    }
+
+    private void gameWonScenario() {
+        CLIObserver.printBoard();
+        CLIObserver.printWin();
+    }
+
 }
