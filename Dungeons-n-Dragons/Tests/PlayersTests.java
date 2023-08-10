@@ -68,6 +68,20 @@ public class PlayersTests {
         // Assert
         assert(enemy.getHealth().getHealthAmount() == 0);
     }
+    @Test
+    public void playerInteractWithEnemyNotKillTest() {
+        // Arrange
+        CLI cli = new CLI();
+        Player player = new Warrior("TestPlayer", 2000, 100, 100, 1);
+        player.initializeAndNotify(new Position(5, 5), cli.gameManager);
+        Enemy enemy = new Monster("TestEnemy", 101, 100, 1, 100, 100, 'M');
+        enemy.initializeAndNotify(new Position(5, 6), cli.gameManager);
+        // Act
+        player.moveDown();
+        // Assert
+        assert(enemy.getHealth().getHealthAmount() != 0 && enemy.getHealth().getHealthAmount() != 101 &&
+                player.getPosition().equals(new Position(5, 5)));
+    }
 
     @Test
     public void playerInteractWithWallTest() {
@@ -101,6 +115,36 @@ public class PlayersTests {
         player.castAbility();
         // Assert
         assert(enemy.getHealth().getHealthAmount() == 0);
+    }
+
+    @Test
+    public void warriorCastAbilityOneKillTest() {
+        // Arrange
+        CLI cli = new CLI();
+        Player player = new Warrior("TestPlayer", 2000, 100, 100, 1);
+        player.initializeAndNotify(new Position(5, 5), cli.gameManager);
+        Enemy enemy1 = new Monster("TestEnemy1", 100, 100, 1, 100, 100, 'M');
+        enemy1.initializeAndNotify(new Position(5, 6), cli.gameManager);
+        Enemy enemy2 = new Monster("TestEnemy2", 100, 100, 1, 100, 100, 'M');
+        enemy2.initializeAndNotify(new Position(6, 5), cli.gameManager);
+        // Act
+        player.castAbility();
+        // Assert
+        assert((enemy1.getHealth().getHealthAmount() == 0 && enemy2.getHealth().getHealthAmount() == 100) ||
+                (enemy1.getHealth().getHealthAmount() == 100 && enemy2.getHealth().getHealthAmount() == 0));
+    }
+    @Test
+    public void warriorCastAbilityNotKillTest() {
+        // Arrange
+        CLI cli = new CLI();
+        Player player = new Warrior("TestPlayer", 2000, 100, 100, 1);
+        player.initializeAndNotify(new Position(5, 5), cli.gameManager);
+        Enemy enemy = new Monster("TestEnemy", 201, 100, 1, 100, 100, 'M');
+        enemy.initializeAndNotify(new Position(5, 6), cli.gameManager);
+        // Act
+        player.castAbility();
+        // Assert
+        assert(enemy.getHealth().getHealthAmount() != 0 && enemy.getHealth().getHealthAmount() != 201);
     }
 
     @Test
@@ -147,6 +191,19 @@ public class PlayersTests {
         player.castAbility();
         // Assert
         assert(enemy.getHealth().getHealthAmount() == 0);
+    }
+    @Test
+    public void mageCastAbilityNotKillTest() {
+        // Arrange
+        CLI cli = new CLI();
+        Player player = new Mage("TestPlayer", 2000, 100, 100, 1000, 1, 1000, 5, 5);
+        player.initializeAndNotify(new Position(5, 5), cli.gameManager);
+        Enemy enemy = new Monster("TestEnemy", 5001, 100, 1, 100, 100, 'M');
+        enemy.initializeAndNotify(new Position(5, 6), cli.gameManager);
+        // Act
+        player.castAbility();
+        // Assert
+        assert(enemy.getHealth().getHealthAmount() != 0 && enemy.getHealth().getHealthAmount() != 5001);
     }
 
     @Test
@@ -196,6 +253,23 @@ public class PlayersTests {
         player.castAbility();
         // Assert
         assert(enemy1.getHealth().getHealthAmount() == 0 && enemy2.getHealth().getHealthAmount() == 0);
+    }
+    @Test
+    public void rogueCastAbilityKillOneTest() {
+        // Arrange
+        CLI cli = new CLI();
+        Player player = new Rogue("TestPlayer", 2000, 100, 100, 1);
+        player.initializeAndNotify(new Position(5, 5), cli.gameManager);
+        Enemy enemy1 = new Monster("TestEnemy", 101, 100, 1, 100, 100, 'M');
+        enemy1.initializeAndNotify(new Position(5, 6), cli.gameManager);
+        Enemy enemy2 = new Monster("TestEnemy2", 1, 100, 1, 100, 100, 'M');
+        enemy2.initializeAndNotify(new Position(6, 5), cli.gameManager);
+
+        // Act
+        player.castAbility();
+        // Assert
+        assert(enemy1.getHealth().getHealthAmount() != 0 && enemy1.getHealth().getHealthAmount() != 101 &&
+                enemy2.getHealth().getHealthAmount() == 0);
     }
 
     @Test
@@ -250,8 +324,66 @@ public class PlayersTests {
         // Assert
         assert(enemy.getHealth().getHealthAmount() == 0 && enemy2.getHealth().getHealthAmount() == 1);
     }
+    @Test
+    public void hunterCastAbility2Closest() {
+        // Arrange
+        CLI cli = new CLI();
+        Player player = new Hunter("TestPlayer", 2000, 100, 100, 1);
+        player.initializeAndNotify(new Position(5, 5), cli.gameManager);
+        Enemy enemy1 = new Monster("TestEnemy1", 1, 100, 1, 100, 100, 'M');
+        enemy1.initializeAndNotify(new Position(5, 6), cli.gameManager);
+        Enemy enemy2 = new Monster("TestEnemy2", 1, 100, 1, 100, 100, 'M');
+        enemy2.initializeAndNotify(new Position(6, 5), cli.gameManager);
+        // Act
+        player.castAbility();
+        // Assert
+        assert((enemy1.getHealth().getHealthAmount() == 1 && enemy2.getHealth().getHealthAmount() == 0)||
+                (enemy1.getHealth().getHealthAmount() == 0 && enemy2.getHealth().getHealthAmount() == 1));
+    }
+    @Test
+    public void hunterCastAbilityNotKillTest() {
+        // Arrange
+        CLI cli = new CLI();
+        Player player = new Hunter("TestPlayer", 2000, 100, 100, 1);
+        player.initializeAndNotify(new Position(5, 5), cli.gameManager);
+        Enemy enemy = new Monster("TestEnemy", 101, 100, 1, 100, 100, 'M');
+        enemy.initializeAndNotify(new Position(6, 6), cli.gameManager);
+        // Act
+        player.castAbility();
+        // Assert
+        assert(enemy.getHealth().getHealthAmount() != 0 && enemy.getHealth().getHealthAmount() != 101);
+    }
 
     @Test
+    public void hunterCastAbilityOnCooldownTest() {
+        // Arrange
+        CLI cli = new CLI();
+        Player player = new Hunter("TestPlayer", 2000, 100, 100, 2);
+        player.initializeAndNotify(new Position(5, 5), cli.gameManager);
+        Enemy enemy1 = new Monster("TestEnemy1", 9999999, 100, 1, 100, 100, 'M');
+        enemy1.initializeAndNotify(new Position(5, 6), cli.gameManager);
+        Enemy enemy2 = new Monster("TestEnemy2", 1, 100, 1, 100, 100, 'M');
+        enemy2.initializeAndNotify(new Position(7, 5), cli.gameManager);
+        // Act
+        // Cast ability 10 times
+        player.castAbility();
+        player.castAbility();
+        player.castAbility();
+        player.castAbility();
+        player.castAbility();
+        player.castAbility();
+        player.castAbility();
+        player.castAbility();
+        player.castAbility();
+        player.castAbility();
+        // No arrows left
+        enemy1.moveDown();
+        enemy1.moveDown();
+        player.castAbility();
+        // Assert
+        assert(enemy2.getHealth().getHealthAmount() == 1);
+    }
+   /* @Test
     public void hunterCastAbilityOnCooldownTest() {
         // Arrange
         CLI cli = new CLI();
@@ -278,7 +410,7 @@ public class PlayersTests {
         player.castAbility();
         // Assert
         assert(enemy2.getHealth().getHealthAmount() == 1);
-    }
+    }*/
 
     @Test
     public void hunterCastAbilityOutOfRangeTest() {
