@@ -383,34 +383,6 @@ public class PlayersTests {
         // Assert
         assert(enemy2.getHealth().getHealthAmount() == 1);
     }
-   /* @Test
-    public void hunterCastAbilityOnCooldownTest() {
-        // Arrange
-        CLI cli = new CLI();
-        Player player = new Hunter("TestPlayer", 2000, 100, 100, 2);
-        player.initializeAndNotify(new Position(5, 5), cli.gameManager);
-        Enemy enemy1 = new Monster("TestEnemy1", 9999999, 100, 1, 100, 100, 'M');
-        enemy1.initializeAndNotify(new Position(5, 7), cli.gameManager);
-        Enemy enemy2 = new Monster("TestEnemy2", 1, 100, 1, 100, 100, 'M');
-        enemy2.initializeAndNotify(new Position(5, 8), cli.gameManager);
-        // Act
-        // Cast ability 10 times
-        player.castAbility();
-        player.castAbility();
-        player.castAbility();
-        player.castAbility();
-        player.castAbility();
-        player.castAbility();
-        player.castAbility();
-        player.castAbility();
-        player.castAbility();
-        player.castAbility();
-        // No arrows left
-        enemy1.moveUp();
-        player.castAbility();
-        // Assert
-        assert(enemy2.getHealth().getHealthAmount() == 1);
-    }*/
 
     @Test
     public void hunterCastAbilityOutOfRangeTest() {
