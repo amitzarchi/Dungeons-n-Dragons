@@ -48,7 +48,9 @@ public class CLI implements CLIObserver {
 
 
     public void printBoard() {
-        System.out.println(gameManager.board);
+        String output = addLevelLine(gameManager.board.toString(), gameManager.currentLevel + 1);
+        System.out.println(output);
+        System.out.println();
     }
 
     public void printGameOver() {
@@ -68,7 +70,8 @@ public class CLI implements CLIObserver {
     }
 
     public void printPlayerStats() {
-        System.out.println(gameManager.board.player);
+        String output = gameManager.board.player.toString();
+        System.out.println(createAsciiFrame(output));
         System.out.println();
     }
 
@@ -170,5 +173,20 @@ public class CLI implements CLIObserver {
             " ___   _  _   ___   _  _   ___   _  _   ___   _  _   ___\r\n" + //
             "/___\\ | \\/ | /___\\ | \\/ | /___\\ | \\/ | /___\\ | \\/ | /___\\\r\n" + //
             "|___|  \\__/  |___|  \\__/  |___|  \\__/  |___|  \\__/  |___|\r\n" ; 
-            
+
+    public static String addLevelLine(String board, int level) {
+        String[] lines = board.split("\n"); 
+        int width = lines[0].length();
+        String paddedInput = "-" + "Level: " + level + "-";
+        int paddingSize = width - paddedInput.length();
+        int leftPadding = paddingSize / 2;
+        int rightPadding = paddingSize - leftPadding;
+        String firstLine = "-".repeat(leftPadding) + paddedInput + "-".repeat(rightPadding);
+        StringBuilder result = new StringBuilder().append(firstLine).append("\n");
+        for (int i = 0; i < lines.length; i++) {
+            result.append(lines[i]).append("\n");
+        }
+        return result.toString();
+    }
+                    
 }
