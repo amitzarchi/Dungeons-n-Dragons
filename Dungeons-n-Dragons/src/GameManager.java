@@ -96,7 +96,7 @@ public class GameManager implements GameObserver {
         CLIObserver.printBattleInformation(attacker, defender, attackRoll, defenseRoll, damage);
     }
 
-    public void AttackInRange(Unit attacker, int range, int attackPoints, boolean hitEveryone) {
+    public void AttackInRange(Player attacker, int range, int attackPoints, boolean hitEveryone) {
         List<Enemy> enemies = getEnemiesInRange(attacker.getPosition(), range);
         if (enemies.size() > 0) {
             Map<Unit, Integer> battleInformation = new HashMap<Unit, Integer>();
@@ -104,26 +104,37 @@ public class GameManager implements GameObserver {
                 for (Enemy enemy : enemies) {
                     int damage = enemy.TakeAHit(attackPoints);
                     battleInformation.put(enemy, damage);
+                    if (enemy.getHealth().isDead()) {
+                        attacker.increaseExperience(enemy.getExperienceValue());
+                    }
                 }
             }
             else {
                 Random rand = new Random();
                 int index = rand.nextInt(enemies.size());
-                int damage = enemies.get(index).TakeAHit(attackPoints);
+                Enemy enemy = enemies.get(index);
+                int damage = enemy.TakeAHit(attackPoints);
+                if (enemy.getHealth().isDead()) {
+                    attacker.increaseExperience(enemy.getExperienceValue());
+                }
                 battleInformation.put(enemies.get(index), damage);
             }
             AbilityCastInfo(attacker, battleInformation);
         }
     }
 
-    public void MageAttack(Unit attacker, int range, int hits, int attackPoints) {
+    public void MageAttack(Player attacker, int range, int hits, int attackPoints) {
         List<Enemy> enemies = getEnemiesInRange(attacker.getPosition(), range);
         if (enemies.size() > 0) {
             Map<Unit, Integer> battleInformation = new HashMap<Unit, Integer>();
             Random rand = new Random();
             for (int i = 0; i < hits; i++) {
                 int index = rand.nextInt(enemies.size());
-                int damage = enemies.get(index).TakeAHit(attackPoints);
+                Enemy enemy = enemies.get(index);
+                int damage = enemy.TakeAHit(attackPoints);
+                if (enemy.getHealth().isDead()) {
+                    attacker.increaseExperience(enemy.getExperienceValue());
+                }
                 battleInformation.put(enemies.get(index), damage);
             }
             AbilityCastInfo(attacker, battleInformation);
@@ -131,11 +142,14 @@ public class GameManager implements GameObserver {
     }
          
 
-    public boolean HunterAbillityCast(Unit attacker, int range, int attackPoints) {
+    public boolean HunterAbillityCast(Player attacker, int range, int attackPoints) {
         Enemy enemy = getClosestEnemy(attacker.getPosition(), range);
             Map<Unit, Integer> battleInformation = new HashMap<Unit, Integer>();
         if (enemy != null) {
             int damage = enemy.TakeAHit(attackPoints);
+            if (enemy.getHealth().isDead()) {
+                attacker.increaseExperience(enemy.getExperienceValue());
+            }
             battleInformation.put(enemy, damage);
             AbilityCastInfo(attacker, battleInformation);
             return true;
@@ -192,8 +206,8 @@ public class GameManager implements GameObserver {
         CLIObserver.printPlayerLeveledUp(player);
     }
     
-    public void enemyDeath(String name) {
-        CLIObserver.printEnemyDeath(name);
+    public void enemyDeath(Enemy enemy) {
+        CLIObserver.printEnemyDeath(enemy);
     }
 
     // Private methods - for readability

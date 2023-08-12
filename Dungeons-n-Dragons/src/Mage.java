@@ -38,11 +38,19 @@ public class Mage extends Player {
         }
     }
 
+    public void levelUp() {
+        manaPool += 25 * (level+1);
+        currentMana = Math.min(manaPool, currentMana + (manaPool / 4));
+        spellPower += 10 * (level+1);
+        super.levelUp();
+    }
+    
+    private boolean canCast() {
+        return currentMana >= manaCost;
+    }
+
     public String toString() {
         return super.toString() + " | mana: " + currentMana + "/" + manaPool;
     }
 
-    private boolean canCast() {
-        return currentMana >= manaCost;
-    }
 }

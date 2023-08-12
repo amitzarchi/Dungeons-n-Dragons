@@ -30,7 +30,17 @@ public class Rogue extends Player {
         }
     }
 
+    public void levelUp() {
+        currentEnergy = 100;
+        increaseAttackPoints(3*(level+1));
+        super.levelUp();
+    }
+
     private boolean canCast() {
         return currentEnergy >= cost;
+    }
+
+    public String toString() {
+        return super.toString() + " | energy: " + currentEnergy + "/" + 100;
     }
 }

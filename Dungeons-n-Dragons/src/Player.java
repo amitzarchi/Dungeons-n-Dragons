@@ -50,11 +50,8 @@ public abstract class Player extends Unit implements HeroicUnit{
     public void interactVisit(Enemy enemy) {
         battle(enemy);
         if (enemy.getHealth().isDead()) {
-            experience += enemy.getExperienceValue();
+            increaseExperience(enemy.getExperienceValue());
             enemy.onDeath();
-            if (levelUpCheck()) {
-                levelUp();
-            }
         }
     }
 
@@ -73,8 +70,8 @@ public abstract class Player extends Unit implements HeroicUnit{
 
     public void levelUp() {
         while (experience >= 50 * level) {
-            level++;
             experience -= 50 * level;
+            level++;
             this.getHealth().increaseMaxHealth(10 * level);
             this.getHealth().SetHealthAmountToMax();
             this.increaseAttackPoints(4*level);
@@ -98,6 +95,13 @@ public abstract class Player extends Unit implements HeroicUnit{
 
     public int getLevel() {
         return level;
+    }
+
+    public void increaseExperience(int amount) {
+        this.experience += amount;
+        if (levelUpCheck()) {
+            levelUp();
+        }
     }
 
     public abstract void onGameTick();

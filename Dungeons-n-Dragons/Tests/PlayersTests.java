@@ -273,25 +273,6 @@ public class PlayersTests {
     }
 
     @Test
-    public void rogueCastAbilityOnCooldownTest() {
-        // Arrange
-        CLI cli = new CLI();
-        Player player = new Rogue("TestPlayer", 2000, 100, 100, 100);
-        player.initializeAndNotify(new Position(5, 5), cli.gameManager);
-        Enemy enemy1 = new Monster("AliveEnemy", 1, 100, 1, 100, 100, 'M');
-        enemy1.initializeAndNotify(new Position(5, 8), cli.gameManager);
-        Enemy enemy2 = new Monster("DeadEnemy", 1, 100, 1, 100, 100, 'M');
-        enemy2.initializeAndNotify(new Position(6, 5), cli.gameManager);
-        // Act
-        player.castAbility();
-        enemy1.moveUp();
-        player.castAbility();
-        // Assert
-        assert(enemy1.getHealth().getHealthAmount() == 1 && enemy2.getHealth().getHealthAmount() == 0);
-
-    }
-
-    @Test
     public void rogueCastAbilityOutOfRangeTest() {
         // Arrange
         CLI cli = new CLI();

@@ -20,11 +20,11 @@ public class Warrior extends Player{
     }
 
     public void levelUp() {
-        super.levelUp();
         this.remainingCooldown = 0;
-        getHealth().increaseMaxHealth(5*level);
-        increaseAttackPoints(2*level);
-        increaseDefensePoints(level);
+        getHealth().increaseMaxHealth(5*(level+1));
+        increaseAttackPoints(2*(level+1));
+        increaseDefensePoints((level+1));
+        super.levelUp();
     }
 
 
@@ -40,13 +40,12 @@ public class Warrior extends Player{
         }
     }
 
-    public String toString() {
-        return super.toString() + " | ability cooldown: " + abilityCooldown + " | remaining cooldown: " + remainingCooldown;
-    }
-
     private boolean canCast() {
         return remainingCooldown == 0;
     }
 
+    public String toString() {
+        return super.toString() + " | ability cooldown: " + abilityCooldown + " | remaining cooldown: " + remainingCooldown;
+    }
 
 }

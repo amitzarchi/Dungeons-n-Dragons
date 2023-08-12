@@ -19,7 +19,7 @@ public abstract class Enemy extends Unit {
 
     public void onDeath() {
         this.delete();
-        getObserver().enemyDeath(getName());
+        getObserver().enemyDeath(this);
     }
 
     public void interactAccept(Unit unit) {

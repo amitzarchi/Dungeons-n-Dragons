@@ -26,10 +26,10 @@ public class Hunter extends Player {
     }
 
     public void levelUp() {
+        arrowsCount += (level+1);
+        increaseAttackPoints(2*(level+1));
+        increaseDefensePoints((level+1));
         super.levelUp();
-        arrowsCount += level;
-        increaseAttackPoints(2*level);
-        increaseDefensePoints(level);
     }
 
     public void castAbility() {
@@ -42,11 +42,12 @@ public class Hunter extends Player {
         }
     }
 
-    public String toString() {
-        return super.toString() + " | arrows: " + arrowsCount;
-    }     
-
     private boolean CanCast() {
         return arrowsCount > 0;
     }
+
+    public String toString() {
+        return super.toString() + " | arrows: " + arrowsCount;
+    }     
+    
 }
