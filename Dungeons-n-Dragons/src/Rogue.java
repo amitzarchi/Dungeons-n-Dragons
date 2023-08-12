@@ -41,6 +41,6 @@ public class Rogue extends Player {
     }
 
     public String toString() {
-        return super.toString() + " | energy: " + currentEnergy + "/" + 100;
+        return super.toString() + " | energy: " + currentEnergy + "/" + 100 + " | Ability cost: " + cost;
     }
 }

@@ -1,6 +1,7 @@
 import java.util.Map;
 
 public interface CLIObserver {
+    public void play();
     public void printBoard();
     public void printGameOver();
     public void printWin();

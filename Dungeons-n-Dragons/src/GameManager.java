@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 
 public class GameManager implements GameObserver {
     public List<Board> boards;
@@ -128,14 +129,15 @@ public class GameManager implements GameObserver {
         if (enemies.size() > 0) {
             Map<Unit, Integer> battleInformation = new HashMap<Unit, Integer>();
             Random rand = new Random();
-            for (int i = 0; i < hits; i++) {
+            for (int i = 0; (i < hits) && enemies.size() > 0; i++) {
                 int index = rand.nextInt(enemies.size());
                 Enemy enemy = enemies.get(index);
                 int damage = enemy.TakeAHit(attackPoints);
+                battleInformation.put(enemy, damage);
                 if (enemy.getHealth().isDead()) {
+                    enemies.remove(index);
                     attacker.increaseExperience(enemy.getExperienceValue());
                 }
-                battleInformation.put(enemies.get(index), damage);
             }
             AbilityCastInfo(attacker, battleInformation);
         }
@@ -219,6 +221,7 @@ public class GameManager implements GameObserver {
         board.player.onDeath();
         CLIObserver.printBoard();
         CLIObserver.printGameOver();
+        AskToPlayAgain();
     }
 
     private void printBoardAndStats() {
@@ -250,6 +253,23 @@ public class GameManager implements GameObserver {
     private void gameWonScenario() {
         CLIObserver.printBoard();
         CLIObserver.printWin();
+        AskToPlayAgain();
+    }
+
+    private void AskToPlayAgain() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            char c = scanner.next().charAt(0);
+            while (!(c == 'y')  && !(c == 'n')) {
+                c = scanner.next().charAt(0);
+            }
+            if (c == 'y') {
+                CLIObserver.play();
+            }
+            if (c == 'n') {
+                System.out.println("Bye Bye");
+                System.exit(0);
+            }
+        }
     }
 
 }

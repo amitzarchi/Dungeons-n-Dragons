@@ -56,6 +56,7 @@ public class CLI implements CLIObserver {
     public void printGameOver() {
         System.out.println(YouLostWithBorder);
         System.out.println();
+
     }
 
     public void printWin() {
@@ -134,7 +135,7 @@ public class CLI implements CLIObserver {
     }
 
 
-    private String YouWonWithBorder =
+    public String YouWonWithBorder =
      " .--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--.\r\n" + //
              "/ .. \\.. \\.. \\.. \\.. \\.. \\.. \\.. \\.. \\.. \\.. \\.. \\.. \\.. \\.. \\.. \\\r\n" + //
              "\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/\\ \\/ /\r\n" + //
@@ -146,7 +147,7 @@ public class CLI implements CLIObserver {
              " / /\\/ /                                                  \\ \\/ /\\\r\n" + //
              "/ /\\ \\/                      You Won!                      \\ \\/\\ \\\r\n" + //
              "\\ \\/\\ \\                                                    /\\ \\/ /\r\n" + //
-             " \\/ /\\ \\                                                  / /\\/ /\r\n" + //
+             " \\/ /\\ \\                 Play Again? y/n                  / /\\/ /\r\n" + //
              " / /\\/ /                                                  \\ \\/ /\\\r\n" + //
              "/ /\\ \\/                                                    \\ \\/\\ \\\r\n" + //
              "\\ \\/\\ \\.--..--..--..--..--..--..--..--..--..--..--..--..--./\\ \\/ /\r\n" + //
@@ -164,10 +165,10 @@ public class CLI implements CLIObserver {
             " _  _                                               _  _ \r\n" + //
             "| \\/ |                                             | \\/ |\r\n" + //
             " \\__/                                               \\__/ \r\n" + //
-            " ___                                                 ___\r\n" + //
-            "/___\\                You Lost!                      /___\\\r\n" + //
-            "|___|                 GAME OVER                     |___|\r\n" + //
-            " _  _                                               _  _   \r\n" + //
+            " ___                   You Lost!                     ___\r\n" + //
+            "/___\\                  GAME OVER                    /___\\\r\n" + //
+            "|___|                                               |___|\r\n" + //
+            " _  _                Play Again? y/n                _  _   \r\n" + //
             "| \\/ |                                             | \\/ | \r\n" + //
             " \\__/                                               \\__/  \r\n" + //
             " ___   _  _   ___   _  _   ___   _  _   ___   _  _   ___\r\n" + //

@@ -50,7 +50,7 @@ public class Mage extends Player {
     }
 
     public String toString() {
-        return super.toString() + " | mana: " + currentMana + "/" + manaPool;
+        return super.toString() + " | mana: " + currentMana + "/" + manaPool + " | mana cost: " + manaCost + " | spell power: " + spellPower;
     }
 
 }
