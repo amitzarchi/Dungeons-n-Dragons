@@ -19,7 +19,16 @@ public class CLI implements CLIObserver {
     {
         printChoosePlayer();
         scanner = new Scanner(System.in);
-        int playerNum = scanner.nextInt();
+        int playerNum = 0;
+        try {
+            playerNum = scanner.nextInt();
+            if (playerNum < 1 || playerNum > 7) {
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid player number");
+            play();
+        }
         gameManager = new GameManager(playerNum, path, this);
         gameManager.play();
     }
